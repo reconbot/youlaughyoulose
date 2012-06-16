@@ -31,7 +31,7 @@ var setReady = function(data, fn){
   // Let everyone know that someone is ready
   var that = this;
   _.forEach(players, function(player){
-    if(player !== that){
+    if(player !== that && player.ready){
       player.emit('ready', countDown);
     }
   });
