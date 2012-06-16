@@ -32,7 +32,7 @@ APP.Game = Backbone.View.extend({
 
   onFaceResult: function(smile){
     if(smile){
-      return this.loose();
+      return this.lose();
     }
 
     if(this.playing){
@@ -40,8 +40,25 @@ APP.Game = Backbone.View.extend({
     }
   },
 
-  loose: function(){
+  lose: function(){
     window.alert('haha you lose');
+    this.drawRedX();
+    $($('#game')[0]).append(camera.canvas)
+  },
+
+  drawRedX: function() {
+    camera.ctx.lineWidth = 3;
+    camera.ctx.strokeStyle = "red";
+
+    camera.ctx.beginPath();
+
+    camera.ctx.moveTo(0, 0);
+    camera.ctx.lineTo(camera.canvas.width, camera.canvas.height);
+    camera.ctx.stroke();
+
+    camera.ctx.moveTo(camera.canvas.width, 0);
+    camera.ctx.lineTo(0, camera.canvas.height);
+    camera.ctx.stroke();
   }
 
 });
@@ -50,7 +67,7 @@ APP.Game = Backbone.View.extend({
 
 APP.Camera = function(opt){
   opt = opt || {};
-  
+
   var x = opt.x || 640;
   var y = opt.y || 480;
 
