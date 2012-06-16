@@ -8,6 +8,11 @@ APP.Game = Backbone.View.extend({
 
     this.playing = false;
 
+
+    this.buzzerAudioElement = document.createElement('audio');
+    this.buzzerAudioElement.setAttribute('src', '/sounds/buzzer.mp3');
+    this.buzzerAudioElement.load()
+
     _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot');
 
     this.socket.on('start', this.start);
@@ -30,35 +35,52 @@ APP.Game = Backbone.View.extend({
     this.socket.emit('image',data, this.onFaceResult);
   },
 
-  onFaceResult: function(smile){
-    if(smile){
-      return this.lose();
+  onFaceResult: function(isSmiling, faces){
+    console.log(faces)
+    if(isSmiling){
+      return this.lose(faces);
     }
 
     if(this.playing){
-      window.setTimeout(this.snapshot, 10);
+      window.setTimeout(this.snapshot, 1);
     }
   },
 
-  lose: function(){
-    window.alert('haha you lose');
-    this.drawRedX();
+  lose: function(face){
+    this.buzzerAudioElement.play();
+    this.drawBoxes(face);
     $($('#game')[0]).append(camera.canvas)
   },
 
-  drawRedX: function() {
-    camera.ctx.lineWidth = 3;
-    camera.ctx.strokeStyle = "red";
+  drawBoxes: function(faces) {
+    camera.ctx.lineWidth = 6;
 
-    camera.ctx.beginPath();
+    for (var i=0 ; i < faces.length ; i++) {
+      var face = faces[i];
 
-    camera.ctx.moveTo(0, 0);
-    camera.ctx.lineTo(camera.canvas.width, camera.canvas.height);
-    camera.ctx.stroke();
+      if (face.loser)
+        camera.ctx.strokeStyle = "red";
+      else
+        camera.ctx.strokeStyle = "green";
 
-    camera.ctx.moveTo(camera.canvas.width, 0);
-    camera.ctx.lineTo(0, camera.canvas.height);
-    camera.ctx.stroke();
+      camera.ctx.beginPath();
+
+      var center_x = face.x + (face.width/2)
+        , center_y = face.y + (face.height/2)
+        , radius = (face.width > face.height ? face.width : face.height) / 2;
+
+
+      camera.ctx.arc(center_x, center_y, radius, 0, Math.PI*2, true);
+
+      if (face.loser) {
+        camera.ctx.moveTo(face.x, face.y);
+        camera.ctx.lineTo(face.x + face.width, face.y + face.height);
+        camera.ctx.moveTo(face.x + face.width, face.y);
+        camera.ctx.lineTo(face.x, face.y + face.height);
+      }
+
+      camera.ctx.stroke();
+    }
   }
 
 });
