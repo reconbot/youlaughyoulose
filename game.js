@@ -133,16 +133,23 @@ module.exports = {
     sockets.on('disconnect', gameOff);
   },
   postBack: function(req, res){
-    if(!req.params.id){
-      console.error('No ID!?');
-      res.end('NO ID');
-      return;
-    }
-    var socket = players[req.params.id];
-    
-    detect.call(socket, req.body.data, function(smile, faces){
+
+    var resCb = function(smile, faces){
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify({smile: smile, faces:faces}));
-    });
+    };
+
+    if(!req.params.id){
+      //fine no events, lets just play along
+      var faker = {
+          emit: function(){}
+        , gameId: 0
+        , id: 0
+      };
+      return detect.call(faker, req.body.data, resCb);
+    }
+
+    var socket = players[req.params.id];
+    detect.call(socket, req.body.data, resCb);
   }
 };

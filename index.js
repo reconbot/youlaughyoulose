@@ -82,7 +82,11 @@ app.get('/', function(req, res){
   res.render('index', {pictureURLs: JSON.stringify(allPictureURLs)});
 });
 
-app.post('/face/:id', game.postBack);
+app.get('/test/:motherfucker?',function(req, res){
+  res.render('test',{'data':'motherfucker'});
+});
+
+app.post('/face/:id?', game.postBack);
 
 //magic happens here
 game.sockets(io.sockets);

@@ -1,0 +1,46 @@
+<h1>Hi Folks, what is going on!?</h1>
+<script type="text/javascript" src="/js/lib/benchmark.js"></script>
+<script type="text/javascript">
+run = function(){
+  var suite = window.suit = new Benchmark.Suite;
+
+  var camera = window.camera = new APP.Camera();
+  $(camera.canvas).appendTo('body')
+  camera.on('ready', function(){
+    //data = camera.snapshot();
+
+    bench = suite.add('post', {
+        'defer': true
+      , minSamples: 100
+      , 'fn': function(deferred) {
+        var post = $.ajax('/face/', {
+          contentType: 'application/json'
+          , data: JSON.stringify({data:camera.snapshot()})
+          , type: 'POST'
+          , complete: function(){
+            deferred.resolve();
+          }
+        });
+        }
+    }).add('websocket', {
+        'defer': true
+      , minSamples: 100
+      , 'fn': function(deferred) {
+          io.connect().emit('image', camera.snapshot(), function(){
+              deferred.resolve();
+          });
+        }
+    }).on('complete', function(){
+      $('<pre></pre>').text('Fastest is ' + this.filter('fastest').pluck('name')).appendTo('body');
+      $('<pre></pre>').text(JSON.stringify(bench[0].stats, null, "\t")).appendTo('body');
+      $('<pre></pre>').text(JSON.stringify(bench[1].stats, null, "\t")).appendTo('body');
+
+    });
+
+
+    bench.run();
+  });
+
+
+}
+</script>
