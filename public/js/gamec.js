@@ -30,12 +30,22 @@ APP.Game = Backbone.View.extend({
     }
 
 
-    _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win', 'showRandomImage', 'startCountDown');
+    _.bindAll(this
+      , 'onFaceResult'
+      , 'start'
+      , 'stop'
+      , 'snapshot'
+      , 'win'
+      , 'showRandomImage'
+      , 'startCountDown'
+      , 'showReadyCount'
+    );
 
     this.socket.on('start', this.start);
     this.socket.on('stop', this.stop);
     this.socket.on('win', this.win);
     this.socket.on('ready', this.startCountDown);
+    this.socket.on('readycount', this.showReadyCount);
   },
 
   render: function(){
@@ -86,6 +96,7 @@ APP.Game = Backbone.View.extend({
   start: function(){
     console.log('Starting the game!');
     this.playing = true;
+    this.$('.readycount').addClass('hide');
     this.stopCountDown();
     this.showPictures();
     this.startCyclingImages();
@@ -96,6 +107,7 @@ APP.Game = Backbone.View.extend({
   stop: function(){
     console.log('Stopping the game!');
     this.playing = false;
+    this.$('.readycount').removeClass('hide');
     this.$('.js-ready').text("Play the Game Again!").removeClass('disabled');
   },
 
@@ -194,6 +206,10 @@ APP.Game = Backbone.View.extend({
     ctx.fillStyle = "red";
     ctx.clearRect(0, 0, el.width, el.height);
     ctx.fillText(text, el.width/2 - fontSize/4, (el.height + fontSize)/2);
+  },
+
+  showReadyCount: function(count){
+    this.$('.js-readycount').text(count);
   },
 
   loadImageIntoCanvas: function(imageDataURL, callback) {

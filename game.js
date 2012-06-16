@@ -9,6 +9,7 @@ var players = {};
 
 var timeout;
 var countDown = 9*1000;
+var readycount = 0;
 
 //hook up the functions we want on the socket
 var gameOn = function(socket){
@@ -21,6 +22,7 @@ var gameOn = function(socket){
 
 var setReady = function(data, fn){
   if(this.ready){ return; }
+  readycount ++;
   if(timeout){
     clearTimeout(timeout);
   }
@@ -34,6 +36,7 @@ var setReady = function(data, fn){
     if(player !== that && player.ready){
       player.emit('ready', countDown);
     }
+    player.emit('readycount', readycount);
   });
   //send the confirm ready event back
   if(typeof fn === 'function'){fn(countDown);}
@@ -52,12 +55,16 @@ var checkReady = function(){
 
 var startGame = function(){
     var gameId = new Date().getTime();
-    _.forEach(players, function(playa){
-      if(!playa.ready){return;}
-      playa.gameId = gameId;
-      playa.ready = false;
-      playa.emit('start', '!');
+    readycount = 0;
+
+    _.forEach(players, function(player){
+      player.emit('readycount', readycount);
+      if(!player.ready){return;}
+      player.gameId = gameId;
+      player.ready = false;
+      player.emit('start', '!');
     });
+
 };
 
 var lose = function(loser, imageDataURL, faces){
