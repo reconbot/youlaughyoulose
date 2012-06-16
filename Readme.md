@@ -2,15 +2,10 @@ You Laugh, You Lose
 ====================
 
 Requirements:
-
-  Libraries:
-   + OpenCV 2.3.1a (for Haar feature detection)
-
-  Browsers:
-   1. *Dev Channel* release of Chrome (or recent Opera). 
-   2. Chrome Canary is the latest dev and wont mess with your usual chrome install.
-      [https://tools.google.com/dlpage/chromesxs](https://tools.google.com/dlpage/chromesxs)
-
+  + OpenCV 2.3.1a (for Haar feature detection)
+  + *Dev Channel* release of Chrome (or recent Opera). 
+  + Chrome Canary is the latest dev and wont mess with your usual chrome install.
+  [https://tools.google.com/dlpage/chromesxs](https://tools.google.com/dlpage/chromesxs)
 
 
 To Run:
