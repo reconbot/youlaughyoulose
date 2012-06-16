@@ -5,6 +5,11 @@ var SmileDetector = require('./smile_detector/smile_detector')
 //hook up the functions we want on the socket
 var game = module.exports = function(socket){
   socket.on('image', function(data, cb){
+    if (!cb) {
+      console.log("got image event with no cb, wtf!");
+      return;
+    }
+
     // remove data url header
     var base64PNG = data.substring(CONFIG.dataURLHeader.length)
       , buffer = new Buffer(base64PNG, 'base64');
@@ -21,12 +26,15 @@ var game = module.exports = function(socket){
           var face = faces[i];
           console.log(face);
           console.log("Face [" + i + "]: smiling? " + face.smile + " / smile intensity: ");
-          if (face.smile && face.intensity > CONFIG.smileThreshold)
-            console.log("SMILING!")
+          if (face.smile && face.intensity > CONFIG.smileThreshold) {
+            cb(true);
+            return;
+          }
         }
+        cb(false);
+        fs.unlink(tmpImgFilePath)
       });
 
-      cb(true);
     });
   });
 };
