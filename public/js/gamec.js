@@ -18,7 +18,7 @@ APP.Game = Backbone.View.extend({
 
     this.render();
 
-    _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win');
+    _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win', 'showRandomImage');
 
     this.socket.on('start', this.start);
     this.socket.on('stop', this.stop);
@@ -42,6 +42,7 @@ APP.Game = Backbone.View.extend({
   },
 
   ready: function(){
+    this.showVideo();
     this.socket.emit('ready', 'you know it!');
   },
 
@@ -58,7 +59,8 @@ APP.Game = Backbone.View.extend({
 
   startCyclingImages: function() {
     this.showRandomImage();
-    this.pictureIntervalId = setInterval(this.showRandomImage, 10*1000);
+
+    this.pictureIntervalId = setInterval(this.showRandomImage, 5*1000);
   },
 
   stopCyclingImages: function() {
@@ -67,7 +69,7 @@ APP.Game = Backbone.View.extend({
 
   showRandomImage: function() {
     var randomPic = this.pictureURLs[ Math.floor(Math.random() * this.pictureURLs.length) ];
-    $('#funnyImage')[0].src = randomPic;
+    $('.js-funnyImage').attr('src', randomPic);
   },
 
   snapshot: function(){
@@ -91,11 +93,13 @@ APP.Game = Backbone.View.extend({
     console.log('you won!');
     this.winAudioElement.play();
     this.stopCyclingImages();
+    this.stop();
   },
 
   lose: function(face){
     this.loseAudioElement.play();
     this.stopCyclingImages();
+    this.stop();
     this.drawBoxes(face);
     this.showCanvas();
     console.log('you lost');
