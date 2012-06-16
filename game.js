@@ -16,7 +16,14 @@ var game = module.exports = function(socket){
         console.log(err);
 
       SmileDetector.detect(tmpImgFilePath, function(faces) {
-        console.log(faces);
+        console.log("Found " + faces.length + " faces");
+        for (var i=0 ; i < faces.length ; i++) {
+          var face = faces[i];
+          console.log(face);
+          console.log("Face [" + i + "]: smiling? " + face.smile + " / smile intensity: ");
+          if (face.smile && face.intensity > CONFIG.smileThreshold)
+            console.log("SMILING!")
+        }
       });
 
       cb(true);

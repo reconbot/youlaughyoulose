@@ -21,7 +21,8 @@ var tmpImagesPath = './tmp'
 
 
 CONFIG = {
-  dataURLHeader: 'data:image/png;base64,'
+  dataURLHeader: 'data:image/png;base64,',
+  smileThreshold: 15
 }
 
 
