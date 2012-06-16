@@ -5,6 +5,7 @@ APP.Game = Backbone.View.extend({
   initialize: function(opt){
     this.socket = opt.socket;
     this.camera = opt.camera;
+    this.pictureURLs = opt.pictureURLs;
 
     this.playing = false;
 
@@ -18,12 +19,15 @@ APP.Game = Backbone.View.extend({
     this.winAudioElement.setAttribute('src', '/sounds/bell.mp3');
     this.winAudioElement.load();
 
+    // preload funny images
+    for (var i=0 ; i < this.pictureURLs.length ; i++)
+      $('<img src ="' + this.pictureURLs[i] + '"/>')
+
     _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win');
 
     this.socket.on('start', this.start);
     this.socket.on('stop', this.stop);
     this.socket.on('win', this.win);
-
   },
 
   ready: function(){

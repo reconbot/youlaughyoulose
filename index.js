@@ -46,8 +46,16 @@ if (path.existsSync(ramdiskPath)) {
 CONFIG.tmpImagesPath = tmpImagesPath;
 console.log("tmp dir: " + tmpImagesPath);
 
-var allPicturePaths = fs.readdirSync(staticPath + picsDirPath);
+var allPicturePaths = fs.readdirSync(staticPath + picsDirPath),
+    allPictureURLs = []
+//var randomPic = allPicturePaths[ Math.floor(Math.random() * allPicturePaths.length) ];
+for (var i=0 ; i < allPicturePaths.length ; i++) {
+  var path = allPicturePaths[i];
+  if (path[0] != '.')
+    allPictureURLs.push(picsDirPath + '/' + path);
+}
 
+console.log(allPictureURLs)
 
 app.configure(function(){
   app.use(express.bodyParser());
@@ -70,7 +78,7 @@ app.configure(function(){
 //
 
 app.get('/', function(req, res){
-  res.render('index');
+  res.render('index', {pictureURLs: JSON.stringify(allPictureURLs)});
 });
 
 //magic happens here
@@ -78,12 +86,6 @@ game(io.sockets);
 
 io.sockets.on('connection', function (socket) {
   socket.send('Hello Programs!');
-});
-
-
-app.get('/randompic', function(req, res){
-  var randomPic = allPicturePaths[ Math.floor(Math.random() * allPicturePaths.length) ];
-  res.send(picsDirPath + '/' + randomPic);
 });
 
 

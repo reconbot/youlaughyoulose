@@ -17,14 +17,12 @@ run = function(){
   var game = window.game = new APP.Game({
     el: $('#game'),
     camera: camera,
-    socket: socket
+    socket: socket,
+    pictureURLs: {{{pictureURLs}}}
   });
 
   var sendData = window.sendData = function(data,cb){
     socket.emit('image',data, cb);
   }
-
-
-
 };
 </script>
