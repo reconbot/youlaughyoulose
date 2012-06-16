@@ -48,12 +48,12 @@ var startGame = function(){
     });
 };
 
-var lose = function(loser){
+var lose = function(loser, imageDataURL, faces){
   console.log(loser.id + ' lost');
   loser.emit('lose');
   _.forEach(players, function(player){
     if(player !== loser && player.gameId === loser.gameId){
-      player.emit('win', '!');
+      player.emit('win', imageDataURL, faces);
     }
   });
 };
@@ -64,7 +64,7 @@ var gameOff = function(socket){
   checkReady();
 };
 
-var detect = function(data, cb){
+var detect = function(imageDataURL, cb){
   var socket = this;
   if (!cb) {
     console.log("got image event with no cb, wtf!");
@@ -72,7 +72,7 @@ var detect = function(data, cb){
   }
 
   // remove data url header
-  var base64PNG = data.substring(CONFIG.dataURLHeader.length)
+  var base64PNG = imageDataURL.substring(CONFIG.dataURLHeader.length)
     , buffer = new Buffer(base64PNG, 'base64');
 
   var tmpImgFilePath = CONFIG.tmpImagesPath + "/ylyl_" + Math.floor(Math.random() * 100000) + ".png";
@@ -96,7 +96,7 @@ var detect = function(data, cb){
       }
 
       if (lost){
-        lose(socket);
+        lose(socket, imageDataURL, faces);
         cb(true, faces);
       }else{
         cb(false, null);

@@ -89,20 +89,26 @@ APP.Game = Backbone.View.extend({
     }
   },
 
-  win: function(){
+  win: function(imageDataURL, faces){
     console.log('you won!');
     this.winAudioElement.play();
     this.stopCyclingImages();
     this.stop();
+
+    var that = this;
+    this.loadImageIntoCanvas(imageDataURL, function() {
+      that.drawBoxes(faces);
+      that.showCanvas();
+    });
   },
 
-  lose: function(face){
+  lose: function(faces){
+    console.log('you lost');
     this.loseAudioElement.play();
     this.stopCyclingImages();
     this.stop();
-    this.drawBoxes(face);
+    this.drawBoxes(faces);
     this.showCanvas();
-    console.log('you lost');
   },
 
   showVideo: function(){
@@ -121,6 +127,16 @@ APP.Game = Backbone.View.extend({
     this.$('.js-video').addClass('hide');
     this.$('.js-canvas').addClass('hide');
     this.$('.js-funnyImage').removeClass('hide');
+  },
+
+  loadImageIntoCanvas: function(imageDataURL, callback) {
+    var img = new Image;
+    var that = this;
+    img.onload = function() {
+      that.camera.ctx.drawImage(img, 0, 0);
+      callback()
+    }
+    img.src = imageDataURL;
   },
 
   drawBoxes: function(faces) {
