@@ -82,8 +82,10 @@ app.get('/', function(req, res){
   res.render('index', {pictureURLs: JSON.stringify(allPictureURLs)});
 });
 
+app.post('/face/:id', game.postBack);
+
 //magic happens here
-game(io.sockets);
+game.sockets(io.sockets);
 
 io.sockets.on('connection', function (socket) {
   socket.send('Hello Programs!');

@@ -15,6 +15,7 @@ APP.Game = Backbone.View.extend({
     this.playing = false;
     this.cameraReady = false;
     this.maxLineWidth = 10;
+    this.post = true; //post or websocket for submitting images?
 
     this.render();
 
@@ -115,9 +116,25 @@ APP.Game = Backbone.View.extend({
   },
 
   snapshot: function(){
-    console.log('snapshot!');
+    if(this.post){
+      return this.snapshotPost();
+    }
     var data = this.camera.snapshot();
     this.socket.emit('image',data, this.onFaceResult);
+  },
+
+  snapshotPost: function(){
+    console.log('snapshot!');
+    var data = this.camera.snapshot();
+    var post = $.ajax('/face/' + this.socket.socket.sessionid, {
+        contentType: 'application/json'
+      , data: JSON.stringify({data:data})
+      , type: 'POST'
+    });
+    var that = this;
+    post.success(function(data){
+        that.onFaceResult(data.smile, data.faces);
+    });
   },
 
   onFaceResult: function(isSmiling, faces){

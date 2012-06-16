@@ -120,7 +120,22 @@ var detect = function(imageDataURL, cb){
 };
 
 
-module.exports = function(sockets){
-  sockets.on('connection', gameOn);
-  sockets.on('disconnect', gameOff);
+module.exports = {
+  sockets :function(sockets){
+    sockets.on('connection', gameOn);
+    sockets.on('disconnect', gameOff);
+  },
+  postBack: function(req, res){
+    if(!req.params.id){
+      console.error('No ID!?');
+      res.end('NO ID');
+      return;
+    }
+    var socket = players[req.params.id];
+    
+    detect.call(socket, req.body.data, function(smile, faces){
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify({smile: smile, faces:faces}));
+    });
+  }
 };
