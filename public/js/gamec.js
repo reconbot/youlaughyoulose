@@ -13,14 +13,17 @@ APP.Game = Backbone.View.extend({
     this.pictureIntervalId = null;
 
     this.playing = false;
+    this.cameraReady = false;
     this.maxLineWidth = 10;
 
     this.render();
 
     if(this.camera.ready){
+      this.cameraReady = true;
       this.showVideo();
     }else{
       this.camera.on('ready', function(){
+        this.cameraReady = true;
         this.showVideo();
       }, this);
     }
@@ -51,6 +54,10 @@ APP.Game = Backbone.View.extend({
   },
 
   ready: function(){
+    if(!this.cameraReady){
+      this.$('.loading > h1').animate({'font-size':'-=20px'}).animate({'font-size':'+=20px'});
+      return;
+    }
     this.showVideo();
     this.socket.emit('ready', 'you know it!', this.startCountDown);
   },
