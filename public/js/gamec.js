@@ -273,11 +273,11 @@ APP.Game = Backbone.View.extend({
 APP.Camera = function(opt){
   opt = opt || {};
 
-  this.x = opt.x || 480;
-  this.y = opt.y || 360;
+  this.x = opt.x || 640;
+  this.y = opt.y || 480;
 
   //use a real thing or make a document fragment
-  this.canvas = opt.canvas || $('<canvas width="' + x +'" height="'+y+'"></canvas>').get(0);
+  this.canvas = opt.canvas || $('<canvas width="' + this.x +'" height="'+this.y+'"></canvas>').get(0);
   this.video = opt.video || $('<video autoplay></video>').get(0);
   this.ctx = this.canvas.getContext('2d');
   this.ready = false;

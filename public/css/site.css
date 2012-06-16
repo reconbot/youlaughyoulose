@@ -6,7 +6,7 @@ body {
 .viewport, .btnrow{
   text-align: center;
   position: relative;
-  width: 480px;
+  width: 640px;
   margin: 0 auto 0 auto;
 }
 
@@ -23,8 +23,8 @@ body {
 }
 
 .loading{
-  width:478px;
-  height: 358px;
+  width:638px;
+  height: 478px;
   border: solid black 1px;
   overflow: hidden;
 }
