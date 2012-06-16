@@ -62,7 +62,6 @@ APP.Game = Backbone.View.extend({
     this.drawBoxes(face);
     window.alert('haha you lose');
     console.log('you lost');
-    this.drawRedX();
     $('#game').append(this.camera.canvas);
   },
 
