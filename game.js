@@ -1,6 +1,6 @@
 /*global CONFIG:true */
 
-var SmileDetector = require('./smile_detector/smile_detector')
+var SmileDetector = require('smile_detector')
   , fs = require('fs')
   , _ = require('underscore');
 

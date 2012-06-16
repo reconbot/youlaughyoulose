@@ -1,3 +1,0 @@
-[submodule "smile_detector"]
-	path = smile_detector
-	url = git://github.com/koudelka/Face.js.git
