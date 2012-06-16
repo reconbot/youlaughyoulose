@@ -1,10 +1,22 @@
 var SmileDetector = require('./smile_detector/smile_detector')
-  , fs = require('fs');
+  , fs = require('fs')
+  , _ = require('underscore')
+  , CONFIG = global.CONFIG;
 
+var players = {};
 
 //hook up the functions we want on the socket
-var game = module.exports = function(socket){
-  socket.on('image', function(data, cb){
+var gameOn = function(socket){
+  players[socket.id] = socket;
+  socket.on('image', detect);
+  console.log(socket);
+};
+
+var gameOff = function(socket){
+  delete players[socket.id];
+};
+
+var detect = function(data, cb){
     if (!cb) {
       console.log("got image event with no cb, wtf!");
       return;
@@ -32,10 +44,14 @@ var game = module.exports = function(socket){
           }
         }
         cb(false);
-        fs.unlink(tmpImgFilePath)
+        fs.unlink(tmpImgFilePath);
       });
 
     });
-  });
-};
+  };
 
+
+module.exports = function(sockets){
+  sockets.on('connection', gameOn);
+  sockets.on('disconnect', gameOff);
+};

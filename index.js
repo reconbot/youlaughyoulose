@@ -1,8 +1,7 @@
 var express = require('express')
   , mustache = require('./mustache')
   , app = express.createServer()
-  , socket = require('socket.io')
-  , io = socket.listen(app)
+  , io = require('socket.io').listen(app)
   , fs = require('fs')
   , path = require('path')
   , game = require('./game');
@@ -20,10 +19,10 @@ var tmpImagesPath = './tmp'
   , picsDirPath = '/img/funny_pics';
 
 
-CONFIG = {
+var CONFIG = global.CONFIG = {
   dataURLHeader: 'data:image/png;base64,',
   smileThreshold: 15
-}
+};
 
 
 //
@@ -70,11 +69,11 @@ app.get('/', function(req, res){
 });
 
 //magic happens here
-io.sockets.on('connection', function (socket) {
-  socket.send('Hello Program!');
-  game(socket);
-});
+game(io.sockets);
 
+io.sockets.on('connection', function (socket) {
+  socket.send('Hello Programs!');
+});
 
 
 app.get('/randompic', function(req, res){
