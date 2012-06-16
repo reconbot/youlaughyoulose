@@ -1,7 +1,6 @@
 var SmileDetector = require('./smile_detector/smile_detector')
   , fs = require('fs')
   , _ = require('underscore')
-  , CONFIG = global.CONFIG;
 
 var players = {};
 

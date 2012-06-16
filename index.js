@@ -19,7 +19,7 @@ var tmpImagesPath = './tmp'
   , picsDirPath = '/img/funny_pics';
 
 
-var CONFIG = global.CONFIG = {
+CONFIG = {
   dataURLHeader: 'data:image/png;base64,',
   smileThreshold: 15
 };
