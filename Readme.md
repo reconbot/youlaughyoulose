@@ -17,4 +17,6 @@ To Run:
   5. Open [http://0.0.0.0:3000](http://0.0.0.0:3000) in Chrome.
 
 Possible Speedup:
-  + Use ramdisk as tmp img store (under OS X): `diskutil erasevolume HFS+ "ramdisk" `hdiutil attach -nomount ram://1165430``
+  + Use ramdisk as tmp img store (under OS X): ```
+diskutil erasevolume HFS+ "ramdisk" `hdiutil attach -nomount ram://1165430`
+```
