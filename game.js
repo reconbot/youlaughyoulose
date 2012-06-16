@@ -1,4 +1,4 @@
-var SmileDetector = require('./smile_detector/build/Release/face.node')
+var SmileDetector = require('./smile_detector/smile_detector')
   , fs = require('fs');
 
 
@@ -14,6 +14,10 @@ var game = module.exports = function(socket){
     fs.writeFile(tmpImgFilePath, buffer, function(err) {
       if (err)
         console.log(err);
+
+      SmileDetector.detect(tmpImgFilePath, function(faces) {
+        console.log(faces);
+      });
 
       cb(true);
     });
