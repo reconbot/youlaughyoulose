@@ -6,6 +6,7 @@ APP.Game = Backbone.View.extend({
     this.socket = opt.socket;
     this.camera = opt.camera;
     this.pictureURLs = opt.pictureURLs;
+    this.pictureIntervalId = null;
 
     this.playing = false;
 
@@ -36,11 +37,26 @@ APP.Game = Backbone.View.extend({
 
   start: function(){
     this.playing = true;
+    this.startCyclingImages();
     this.snapshot();
   },
 
   stop: function(){
     this.playing = false;
+  },
+
+  startCyclingImages: function() {
+    this.showRandomImage()
+    this.pictureIntervalId = setInterval(this.showRandomImage, 10*1000);
+  },
+
+  stopCyclingImages: function() {
+    clearInterval(this.pictureIntervalId);
+  },
+
+  showRandomImage: function() {
+    var randomPic = this.pictureURLs[ Math.floor(Math.random() * this.pictureURLs.length) ];
+    $('#funnyImage')[0].src = randomPic;
   },
 
   snapshot: function(){
@@ -63,10 +79,12 @@ APP.Game = Backbone.View.extend({
   win: function(){
     console.log('you won!');
     this.winAudioElement.play();
+    this.stopCyclingImages()
   },
 
   lose: function(face){
     this.loseAudioElement.play();
+    this.stopCyclingImages()
     this.drawBoxes(face);
     window.alert('haha you lose');
     console.log('you lost');

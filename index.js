@@ -46,16 +46,17 @@ if (path.existsSync(ramdiskPath)) {
 CONFIG.tmpImagesPath = tmpImagesPath;
 console.log("tmp dir: " + tmpImagesPath);
 
+
 var allPicturePaths = fs.readdirSync(staticPath + picsDirPath),
     allPictureURLs = []
-//var randomPic = allPicturePaths[ Math.floor(Math.random() * allPicturePaths.length) ];
+
 for (var i=0 ; i < allPicturePaths.length ; i++) {
   var path = allPicturePaths[i];
   if (path[0] != '.')
     allPictureURLs.push(picsDirPath + '/' + path);
 }
 
-console.log(allPictureURLs)
+
 
 app.configure(function(){
   app.use(express.bodyParser());
