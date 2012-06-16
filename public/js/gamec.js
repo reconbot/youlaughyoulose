@@ -146,10 +146,14 @@ APP.Game = Backbone.View.extend({
 
   showCountDown: function(text){
     //don't hide shit
+    var fontSize = 200;
     console.log(text);
     var el = this.$('.js-countdown').removeClass('hide').get(0);
     var ctx = el.getContext('2d');
-    ctx.fillText(text, 100, 100);
+    ctx.font = fontSize + "pt Arial"
+    ctx.fillStyle = "red";
+    ctx.clearRect(0, 0, el.width, el.height);
+    ctx.fillText(text, el.width/2 - fontSize/4, (el.height + fontSize)/2);
   },
 
   loadImageIntoCanvas: function(imageDataURL, callback) {

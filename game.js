@@ -8,7 +8,7 @@ var SmileDetector = require('./smile_detector/smile_detector')
 var players = {};
 
 var timeout;
-var countDown = 10*1000;
+var countDown = 9*1000;
 
 //hook up the functions we want on the socket
 var gameOn = function(socket){
