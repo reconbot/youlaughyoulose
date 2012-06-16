@@ -10,7 +10,7 @@ var express = require('express')
 // Setup ------------------------------------------------------------------------
 //
 
-var port = (process.argv[2] || 3000)
+var port = (process.argv[2] || 80)
   , viewPath = process.cwd() + '/views'
   , staticPath = process.cwd() + '/public';
 
