@@ -1,18 +1,54 @@
+/*global CONFIG:true */
+
 var SmileDetector = require('./smile_detector/smile_detector')
   , fs = require('fs')
-  , _ = require('underscore')
+  , _ = require('underscore');
+
 
 var players = {};
 
 //hook up the functions we want on the socket
 var gameOn = function(socket){
+  console.log(socket.id + ' joined the game');
   players[socket.id] = socket;
+  socket.ready = false;
   socket.on('image', detect);
-  console.log(socket);
+  socket.on('ready', function(){setReady(socket);});
+};
+
+var setReady = function(socket){
+  console.log(socket.id + ' is ready');
+  socket.ready = true;
+  checkReady();
+};
+
+var checkReady = function(){
+  var weReady = _.all(players, function(playa){
+    return playa.ready;
+  });
+  if(weReady){
+    _.forEach(players, function(playa){
+      playa.emit('start', '!');
+      playa.ready = false;
+    });
+  }
+};
+
+var lose = function(socket){
+  console.log(socket.id + ' lost');
+  var loser = this;
+  this.emit('lose');
+  _.forEach(players, function(player){
+    if(player !== loser){
+      player.emit('win', '!');
+    }
+  });
 };
 
 var gameOff = function(socket){
+  console.log(socket.id + ' has left the game');
   delete players[socket.id];
+  checkReady();
 };
 
 var detect = function(data, cb){

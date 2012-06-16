@@ -8,16 +8,20 @@ APP.Game = Backbone.View.extend({
 
     this.playing = false;
 
-
     this.buzzerAudioElement = document.createElement('audio');
     this.buzzerAudioElement.setAttribute('src', '/sounds/buzzer.mp3');
-    this.buzzerAudioElement.load()
+    this.buzzerAudioElement.load();
 
-    _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot');
+    _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win');
 
     this.socket.on('start', this.start);
     this.socket.on('stop', this.stop);
+    this.socket.on('win', this.win);
 
+  },
+
+  ready: function(){
+    this.socket.emit('ready', 'you know it!');
   },
 
   start: function(){
@@ -36,7 +40,7 @@ APP.Game = Backbone.View.extend({
   },
 
   onFaceResult: function(isSmiling, faces){
-    console.log(faces)
+    console.log(faces);
     if(isSmiling){
       return this.lose(faces);
     }
@@ -46,13 +50,22 @@ APP.Game = Backbone.View.extend({
     }
   },
 
+  win: function(){
+    window.alert('youwin!');
+    console.log('you won!');
+  },
+
   lose: function(face){
     this.buzzerAudioElement.play();
     this.drawBoxes(face);
-    $($('#game')[0]).append(camera.canvas)
+    window.alert('haha you lose');
+    console.log('you lost');
+    this.drawRedX();
+    $('#game').append(this.camera.canvas);
   },
 
   drawBoxes: function(faces) {
+    var camera = this.camera;
     camera.ctx.lineWidth = 6;
 
     for (var i=0 ; i < faces.length ; i++) {
