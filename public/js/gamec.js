@@ -8,6 +8,8 @@ APP.Game = Backbone.View.extend({
 
     this.playing = false;
 
+    this.maxLineWidth = 10;
+
     this.buzzerAudioElement = document.createElement('audio');
     this.buzzerAudioElement.setAttribute('src', '/sounds/buzzer.mp3');
     this.buzzerAudioElement.load();
@@ -76,12 +78,23 @@ APP.Game = Backbone.View.extend({
       else
         camera.ctx.strokeStyle = "green";
 
+
       camera.ctx.beginPath();
 
       var center_x = face.x + (face.width/2)
         , center_y = face.y + (face.height/2)
-        , radius = (face.width > face.height ? face.width : face.height) / 2;
+        , radius = null
+        , lineWidth = null
 
+      if (face.width > face.height) {
+        radius = face.width / 2;
+        lineWidth = this.maxLineWidth * (face.width / camera.canvas.width)
+      } else {
+        radius = face.height / 2;
+        lineWidth = this.maxLineWidth * (face.height / camera.canvas.height)
+      }
+
+      camera.ctx.lineWidth = lineWidth;
 
       camera.ctx.arc(center_x, center_y, radius, 0, Math.PI*2, true);
 
