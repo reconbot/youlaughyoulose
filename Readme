@@ -1,0 +1,19 @@
+You Laugh, You Lose
+
+
+Requirements:
+
+Libraries:
+  OpenCV 2.3.1a (for Haar feature detection)
+
+Browsers:
+  *Dev Channel* release of Chrome (or recent Opera): http://www.chromium.org/getting-involved/dev-channel
+
+
+To Run:
+  (install OpenCV 2.3.1a)
+  git submodule init && git submodule update
+  cd smile_detector && node-waf configure build
+
+Possible Speedup:
+  Use ramdisk as tmp img store (under OS X): diskutil erasevolume HFS+ "ramdisk" `hdiutil attach -nomount ram://1165430`
