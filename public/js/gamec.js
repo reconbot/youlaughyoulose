@@ -48,24 +48,27 @@ APP.Game = Backbone.View.extend({
   },
 
   startCountDown: function(countDown){
-    if(this.countdown){
-      clearInterval(this.countdown);
-    }
+    this.stopCountDown();
     var seconds = Math.floor(countDown/1000);
     var that = this;
     this.countDown = setInterval(function(){
       that.showCountDown(seconds);
       seconds -= 1;
       if(seconds < 0){
-        clearInterval(that.countDown);
+        that.stopCountDown();
       }
     }, 1000);
-    //start and reset countdown
-    console.log(countDown);
+  },
+
+  stopCountDown: function(){
+    if(this.countDown){
+      clearInterval(this.countDown);
+    }
   },
 
   start: function(){
     this.playing = true;
+    this.stopCountDown();
     this.showPictures();
     this.startCyclingImages();
     this.snapshot();
@@ -92,12 +95,10 @@ APP.Game = Backbone.View.extend({
 
   snapshot: function(){
     var data = this.camera.snapshot();
-    console.log('sending your mug to our pug');
     this.socket.emit('image',data, this.onFaceResult);
   },
 
   onFaceResult: function(isSmiling, faces){
-    console.log(faces);
     if(isSmiling){
       return this.lose(faces);
     }
@@ -108,7 +109,6 @@ APP.Game = Backbone.View.extend({
   },
 
   win: function(imageDataURL, faces){
-    console.log('you won!');
     this.winAudioElement.play();
     this.stopCyclingImages();
     this.stop();
@@ -121,7 +121,6 @@ APP.Game = Backbone.View.extend({
   },
 
   lose: function(faces){
-    console.log('you lost');
     this.loseAudioElement.play();
     this.stopCyclingImages();
     this.stop();
@@ -147,22 +146,21 @@ APP.Game = Backbone.View.extend({
   showCountDown: function(text){
     //don't hide shit
     var fontSize = 200;
-    console.log(text);
     var el = this.$('.js-countdown').removeClass('hide').get(0);
     var ctx = el.getContext('2d');
-    ctx.font = fontSize + "pt Arial"
+    ctx.font = fontSize + "pt Arial";
     ctx.fillStyle = "red";
     ctx.clearRect(0, 0, el.width, el.height);
     ctx.fillText(text, el.width/2 - fontSize/4, (el.height + fontSize)/2);
   },
 
   loadImageIntoCanvas: function(imageDataURL, callback) {
-    var img = new Image;
+    var img = new Image();
     var that = this;
     img.onload = function() {
       that.camera.ctx.drawImage(img, 0, 0);
-      callback()
-    }
+      callback();
+    };
     img.src = imageDataURL;
   },
 
