@@ -107,7 +107,7 @@ var detect = function(imageDataURL, cb){
 
       for (var i=0 ; i < faces.length ; i++) {
         var face = faces[i];
-        console.log(socket.id + " Face [" + i + "]: smiling? " + face.smile + " / smile intensity: ");
+        console.log(socket.id + " Face [" + i + "]: smiling? " + face.smile + " / smile intensity: " + face.intensity);
         if (face.smile && face.intensity > CONFIG.smileThreshold) {
           face.loser = true;
           lost = true;
