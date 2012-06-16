@@ -25,7 +25,7 @@ io.set('log level', 1); //0 - error, 1 - warn, 2 - info, 3 - debug
 //io.set('close timeout', 10);
 
 CONFIG = {
-  dataURLHeader: 'data:image/png;base64,',
+  dataURLHeader: 'data:image/jpeg;base64,',
   smileThreshold: 15
 };
 

@@ -95,7 +95,7 @@ var detect = function(imageDataURL, cb){
   var base64PNG = imageDataURL.substring(CONFIG.dataURLHeader.length)
     , buffer = new Buffer(base64PNG, 'base64');
 
-  var tmpImgFilePath = CONFIG.tmpImagesPath + "/ylyl_" + Math.floor(Math.random() * 100000) + ".png";
+  var tmpImgFilePath = CONFIG.tmpImagesPath + "/ylyl_" + Math.floor(Math.random() * 100000) + ".jpg";
 
   fs.writeFile(tmpImgFilePath, buffer, function(err) {
     if (err)

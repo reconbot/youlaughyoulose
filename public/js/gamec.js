@@ -320,6 +320,6 @@ APP.Camera.prototype.noCamera = function(e) {
 
 APP.Camera.prototype.snapshot = function() {
   this.ctx.drawImage(this.video, 0, 0);
-  return this.canvas.toDataURL('image/png');
+  return this.canvas.toDataURL('image/jpeg');
 };
 
