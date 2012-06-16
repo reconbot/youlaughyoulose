@@ -13,7 +13,8 @@ To Run:
     On OS X, via homebrew: `brew install https://raw.github.com/mxcl/homebrew/071c3eb/Library/Formula/opencv.rb`
   2. `git submodule init && git submodule update`
   3. `cd smile_detector && node-waf configure build`
-  4. `node index.js`
+  4. `node index.js 3000`
+  5. Open [http://0.0.0.0:3000](http://0.0.0.0:3000) in Chrome.
 
 Possible Speedup:
   + Use ramdisk as tmp img store (under OS X): `diskutil erasevolume HFS+ "ramdisk" `hdiutil attach -nomount ram://1165430``
