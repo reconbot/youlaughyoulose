@@ -56,7 +56,7 @@ APP.Game = Backbone.View.extend({
     this.countDown = setInterval(function(){
       that.showCountDown(seconds);
       seconds -= 1;
-      if(!seconds){
+      if(seconds < 0){
         clearInterval(that.countDown);
       }
     }, 1000);
