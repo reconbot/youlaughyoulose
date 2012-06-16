@@ -14,13 +14,25 @@ app.configure(function(){
   app.use(express.logger());
   app.use(express.responseTime());
   app.use(express.static(staticPath));
+  app.register('.mustache', mustache);
+  app.set('view engine', 'mustache');
+
+  app.use(express.errorHandler({
+    dumpExceptions:true,
+    showStack:true
+  }));
+
 });
 
 
 app.get('/', function(req, res){
-  res.send('hello world');
+  res.render('index');
 });
 
+//magic happens here
+io.sockets.on('connection', function (socket) {
+  socket.send('Hello Program!');
+});
 
 
 app.listen(port);
