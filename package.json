@@ -1,0 +1,15 @@
+{
+  "author": "Francis Gulotta & Michael Shapiro",
+  "name": "yousmileyoulose",
+  "description": "Oy boy",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "~2.5.10",
+    "mustache": "~0.4.0"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
