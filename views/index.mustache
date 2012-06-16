@@ -7,15 +7,7 @@
 <script type="text/javascript">
 run = function(){
   var socket = window.socket = io.connect();
-  socket.on('message', function(){
-    console.log(arguments);
-  });
-};
 
-</script>
-
-
-<script>
   var video  = document.getElementById('video'),
       canvas = document.querySelector('canvas'),
       ctx    = canvas.getContext('2d');
@@ -41,9 +33,14 @@ run = function(){
     // fallback to flash-based 
   }
 
+  var sendData = window.sendData = function(data,cb){
+    socket.emit('image',data, cb);
+  }
 
-  function snapshot() {
+  var snapshot = window.snapshot = function() {
     ctx.drawImage(video, 0, 0);
     return canvas.toDataURL('image/png');
   }
+
+};
 </script>

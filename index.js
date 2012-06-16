@@ -5,7 +5,7 @@ var express = require('express')
   , io = socket.listen(app)
   , fs = require('fs')
   , path = require('path')
-  , SmileDetector = require('./smile_detector/build/Release/face.node')
+  , game = require('./game');
 
 //
 // Setup ------------------------------------------------------------------------
@@ -65,7 +65,10 @@ app.get('/', function(req, res){
 //magic happens here
 io.sockets.on('connection', function (socket) {
   socket.send('Hello Program!');
+  game(socket);
 });
+
+
 
 app.get('/randompic', function(req, res){
   var randomPic = allPicturePaths[ Math.floor(Math.random() * allPicturePaths.length) ];
