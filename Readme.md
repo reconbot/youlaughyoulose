@@ -12,7 +12,7 @@ To Run:
   1. (install OpenCV 2.3.1a)
     On OS X, via homebrew: `brew install https://raw.github.com/mxcl/homebrew/071c3eb/Library/Formula/opencv.rb`
   2. `git submodule init && git submodule update`
-  3. `cd smile_detector && node-waf configure build`
+  3. npm install
   4. `node index.js 3000`
   5. Open [http://0.0.0.0:3000](http://0.0.0.0:3000) in Chrome.
   6. Turn your screen brightness up, try to make your face fill most of the camera area and make sure you're not backlit. The smile detector wont really work otherwise.
