@@ -1,46 +1,29 @@
-<div class="container">
-  <video id="video" autoplay></video>
-  <canvas id="canvas" width="640" height="480"></canvas>
+<div id="game" class="container">
+  <!--<video id="video" autoplay></video>
+  <canvas id="canvas" width="640" height="480"></canvas>-->
 </div>
 
 
 <script type="text/javascript">
 run = function(){
+
   var socket = window.socket = io.connect();
 
-  var video  = document.getElementById('video'),
-      canvas = document.querySelector('canvas'),
-      ctx    = canvas.getContext('2d');
+  var game = window.game = new APP.Game({
+    el: $('#game'),
+    socket: socket
+  });
 
-  navigator.getUserMedia = navigator.getUserMedia ||
-                           navigator.webkitGetUserMedia ||
-                           navigator.mozGetUserMedia ||
-                           navigator.msGetUserMedia;
-
-  if (navigator.getUserMedia) {
-    var noCameraFail = function(e) {
-      console.log('Failed to acquire camera!', e);
-    };
-
-    navigator.getUserMedia({video: true}, function(stream) {
-      if (navigator.webkitGetUserMedia)
-        video.src = window.webkitURL.createObjectURL(stream);
-      else
-        video.src = stream; // Opera
-    }, noCameraFail);
-  } else {
-    alert("Browser doesn't support getUserMedia");
-    // fallback to flash-based 
-  }
+  var camera = window.camera = new APP.Camera({
+    //video: document.getElementById('video'),
+    //canvas: document.querySelector('canvas'),
+  });
 
   var sendData = window.sendData = function(data,cb){
     socket.emit('image',data, cb);
   }
 
-  var snapshot = window.snapshot = function() {
-    ctx.drawImage(video, 0, 0);
-    return canvas.toDataURL('image/png');
-  }
+
 
 };
 </script>
