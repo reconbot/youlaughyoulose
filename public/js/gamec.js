@@ -1,10 +1,46 @@
-/*global APP:true, Backbone:true, $:true */
+/*global APP:true, Backbone:true, $:true, _:true */
 
 APP.Game = Backbone.View.extend({
 
   initialize: function(opt){
     this.socket = opt.socket;
+    this.camera = opt.camera;
 
+    this.playing = false;
+
+    _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot');
+
+    this.socket.on('start', this.start);
+    this.socket.on('stop', this.stop);
+
+  },
+
+  start: function(){
+    this.playing = true;
+    this.snapshot();
+  },
+
+  stop: function(){
+    this.playing = false;
+  },
+
+  snapshot: function(){
+    var data = this.camera.snapshot();
+    this.socket.emit('image',data, this.onFaceResult);
+  },
+
+  onFaceResult: function(smile){
+    if(smile){
+      return this.loose();
+    }
+
+    if(this.playing){
+      window.setTimeout(this.snapshot, 10);
+    }
+  },
+
+  loose: function(){
+    window.alert('haha');
   }
 
 });

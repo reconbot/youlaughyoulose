@@ -1,6 +1,6 @@
 <div id="game" class="container">
-  <!--<video id="video" autoplay></video>
-  <canvas id="canvas" width="640" height="480"></canvas>-->
+  <video id="video" autoplay></video>
+  <!--<canvas id="canvas" width="640" height="480"></canvas>-->
 </div>
 
 
@@ -9,14 +9,15 @@ run = function(){
 
   var socket = window.socket = io.connect();
 
-  var game = window.game = new APP.Game({
-    el: $('#game'),
-    socket: socket
+  var camera = window.camera = new APP.Camera({
+    video: document.getElementById('video')
+    //, canvas: document.querySelector('canvas')
   });
 
-  var camera = window.camera = new APP.Camera({
-    //video: document.getElementById('video'),
-    //canvas: document.querySelector('canvas'),
+  var game = window.game = new APP.Game({
+    el: $('#game'),
+    camera: camera,
+    socket: socket
   });
 
   var sendData = window.sendData = function(data,cb){
