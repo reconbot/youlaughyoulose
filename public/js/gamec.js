@@ -26,6 +26,7 @@ APP.Game = Backbone.View.extend({
 
   snapshot: function(){
     var data = this.camera.snapshot();
+    console.log('sending your mug to our pug');
     this.socket.emit('image',data, this.onFaceResult);
   },
 
@@ -40,7 +41,7 @@ APP.Game = Backbone.View.extend({
   },
 
   loose: function(){
-    window.alert('haha');
+    window.alert('haha you lose');
   }
 
 });
@@ -73,7 +74,6 @@ APP.Camera = function(opt){
 };
 
 APP.Camera.prototype.initHTML5 = function(){
-  console.log(this.video);
   var that = this;
   navigator.getUserMedia({video: true}, function(stream) {
     if (navigator.webkitGetUserMedia){
