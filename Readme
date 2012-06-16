@@ -7,7 +7,10 @@ Libraries:
   OpenCV 2.3.1a (for Haar feature detection)
 
 Browsers:
-  *Dev Channel* release of Chrome (or recent Opera): http://www.chromium.org/getting-involved/dev-channel
+  *Dev Channel* release of Chrome (or recent Opera). 
+  Chrome Canary is the latest dev and wont mess with your usual chrom install.
+    https://tools.google.com/dlpage/chromesxs
+
 
 
 To Run:
