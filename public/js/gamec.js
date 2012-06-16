@@ -112,9 +112,8 @@ APP.Game = Backbone.View.extend({
   },
 
   startCyclingImages: function() {
-
     this.showRandomImage();
-    this.pictureIntervalId = setInterval(this.showRandomImage, 5*1000);
+    this.pictureIntervalId = setInterval(this.showRandomImage, 2.5*1000);
   },
 
   stopCyclingImages: function() {

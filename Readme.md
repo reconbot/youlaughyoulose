@@ -15,7 +15,7 @@ To Run:
   3. `cd smile_detector && node-waf configure build`
   4. `node index.js 3000`
   5. Open [http://0.0.0.0:3000](http://0.0.0.0:3000) in Chrome.
-  6. Turn your screen brightness up and try to make your face fill most of the camera area, the smile detector wont really work otherwise.
+  6. Turn your screen brightness up, try to make your face fill most of the camera area and make sure you're not backlit. The smile detector wont really work otherwise.
 
 Possible Speedup:
   + Use ramdisk as tmp img store (under OS X): ```
