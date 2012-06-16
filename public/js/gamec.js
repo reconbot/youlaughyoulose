@@ -272,8 +272,8 @@ APP.Game = Backbone.View.extend({
 APP.Camera = function(opt){
   opt = opt || {};
 
-  var x = opt.x || 480;
-  var y = opt.y || 360;
+  this.x = opt.x || 480;
+  this.y = opt.y || 360;
 
   //use a real thing or make a document fragment
   this.canvas = opt.canvas || $('<canvas width="' + x +'" height="'+y+'"></canvas>').get(0);
@@ -319,7 +319,7 @@ APP.Camera.prototype.noCamera = function(e) {
 };
 
 APP.Camera.prototype.snapshot = function() {
-  this.ctx.drawImage(this.video, 0, 0);
+  this.ctx.drawImage(this.video, 0, 0, this.x, this.y);
   return this.canvas.toDataURL('image/jpeg');
 };
 
