@@ -1,8 +1,6 @@
 <div class="container">
-
-  <h1>Bootstrap starter template</h1>
-  <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
-
+  <video id="video" autoplay></video>
+  <canvas id="canvas" width="640" height="480"></canvas>
 </div>
 
 
@@ -14,4 +12,38 @@ run = function(){
   });
 };
 
+</script>
+
+
+<script>
+  var video  = document.getElementById('video'),
+      canvas = document.querySelector('canvas'),
+      ctx    = canvas.getContext('2d');
+
+  navigator.getUserMedia = navigator.getUserMedia ||
+                           navigator.webkitGetUserMedia ||
+                           navigator.mozGetUserMedia ||
+                           navigator.msGetUserMedia;
+
+  if (navigator.getUserMedia) {
+    var noCameraFail = function(e) {
+      console.log('Failed to acquire camera!', e);
+    };
+
+    navigator.getUserMedia({video: true}, function(stream) {
+      if (navigator.webkitGetUserMedia)
+        video.src = window.webkitURL.createObjectURL(stream);
+      else
+        video.src = stream; // Opera
+    }, noCameraFail);
+  } else {
+    alert("Browser doesn't support getUserMedia");
+    // fallback to flash-based 
+  }
+
+
+  function snapshot() {
+    ctx.drawImage(video, 0, 0);
+    return canvas.toDataURL('image/png');
+  }
 </script>
