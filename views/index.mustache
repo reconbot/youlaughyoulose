@@ -1,7 +1,12 @@
 <div id="game" class="container">
-  <video id="video" autoplay></video>
-  <img id="funnyImage" />
-  <!--<canvas id="canvas" width="640" height="480"></canvas>-->
+  <div class="row viewport">
+    <video class="js-video" autoplay></video>
+    <canvas class="js-canvas hide" width="640" height="480"></canvas>
+    <img class="js-funnyImage" />
+  </div>
+  <div class="row viewport">
+    <button class="js-ready readybtn btn">READY!</button>
+  </div>
 </div>
 
 
@@ -11,19 +16,17 @@ run = function(){
   var socket = window.socket = io.connect();
 
   var camera = window.camera = new APP.Camera({
-    video: document.getElementById('video')
-    //, canvas: document.querySelector('canvas')
+      video: $('.js-video').get(0)
+    , canvas: $('.js-canvas').get(0)
   });
 
   var game = window.game = new APP.Game({
-    el: $('#game'),
-    camera: camera,
-    socket: socket,
-    pictureURLs: {{{pictureURLs}}}
+      el: $('#game')
+    , camera: camera
+    , socket: socket
+    , pictureURLs: {{{pictureURLs}}}
+
   });
 
-  var sendData = window.sendData = function(data,cb){
-    socket.emit('image',data, cb);
-  }
 };
 </script>

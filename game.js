@@ -19,6 +19,7 @@ var gameOn = function(socket){
 };
 
 var setReady = function(){
+  if(this.ready){ return; }
   if(timeout){
     clearTimeout(timeout);
   }

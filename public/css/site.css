@@ -1,3 +1,13 @@
 body {
   /* is sexy */
+  background-color: #FFFFEE;
+}
+
+.viewport{
+  text-align: center;
+}
+
+.readybtn{
+  background: #EA8;
+  color: maroon;
 }

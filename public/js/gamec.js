@@ -2,6 +2,10 @@
 
 APP.Game = Backbone.View.extend({
 
+  events: {
+    'click .js-ready': 'ready'
+  },
+
   initialize: function(opt){
     this.socket = opt.socket;
     this.camera = opt.camera;
@@ -9,9 +13,19 @@ APP.Game = Backbone.View.extend({
     this.pictureIntervalId = null;
 
     this.playing = false;
-
     this.maxLineWidth = 10;
 
+
+    this.render();
+
+    _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win');
+
+    this.socket.on('start', this.start);
+    this.socket.on('stop', this.stop);
+    this.socket.on('win', this.win);
+  },
+
+  render: function(){
     this.loseAudioElement = document.createElement('audio');
     this.loseAudioElement.setAttribute('src', '/sounds/buzzer.mp3');
     this.loseAudioElement.load();
@@ -21,14 +35,10 @@ APP.Game = Backbone.View.extend({
     this.winAudioElement.load();
 
     // preload funny images
-    for (var i=0 ; i < this.pictureURLs.length ; i++)
-      $('<img src ="' + this.pictureURLs[i] + '"/>')
+    for (var i=0 ; i < this.pictureURLs.length ; i++){
+      $('<img src ="' + this.pictureURLs[i] + '"/>');
+    }
 
-    _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win');
-
-    this.socket.on('start', this.start);
-    this.socket.on('stop', this.stop);
-    this.socket.on('win', this.win);
   },
 
   ready: function(){
@@ -37,6 +47,7 @@ APP.Game = Backbone.View.extend({
 
   start: function(){
     this.playing = true;
+    this.showPictures();
     this.startCyclingImages();
     this.snapshot();
   },
@@ -46,7 +57,7 @@ APP.Game = Backbone.View.extend({
   },
 
   startCyclingImages: function() {
-    this.showRandomImage()
+    this.showRandomImage();
     this.pictureIntervalId = setInterval(this.showRandomImage, 10*1000);
   },
 
@@ -79,16 +90,33 @@ APP.Game = Backbone.View.extend({
   win: function(){
     console.log('you won!');
     this.winAudioElement.play();
-    this.stopCyclingImages()
+    this.stopCyclingImages();
   },
 
   lose: function(face){
     this.loseAudioElement.play();
-    this.stopCyclingImages()
+    this.stopCyclingImages();
     this.drawBoxes(face);
-    window.alert('haha you lose');
+    this.showCanvas();
     console.log('you lost');
-    $('#game').append(this.camera.canvas);
+  },
+
+  showVideo: function(){
+    this.$('.js-canvas').addClass('hide');
+    this.$('.js-funnyImage').addClass('hide');
+    this.$('.js-video').removeClass('hide');
+  },
+
+  showCanvas: function(){
+    this.$('.js-video').addClass('hide');
+    this.$('.js-funnyImage').addClass('hide');
+    this.$('.js-canvas').removeClass('hide');
+  },
+
+  showPictures: function(){
+    this.$('.js-video').addClass('hide');
+    this.$('.js-canvas').addClass('hide');
+    this.$('.js-funnyImage').removeClass('hide');
   },
 
   drawBoxes: function(faces) {
@@ -148,9 +176,9 @@ APP.Camera = function(opt){
   this.canvas = opt.canvas || $('<canvas width="' + x +'" height="'+y+'"></canvas>').get(0);
   this.video = opt.video || $('<video autoplay></video>').get(0);
   this.ctx = this.canvas.getContext('2d');
-
+  this.ready = false;
   // stupid w3c vendor prefix garbage
-  navigator.getUserMedia =  navigator.getUserMedia ||
+  navigator.getUserMedia = navigator.getUserMedia ||
                       navigator.webkitGetUserMedia ||
                       navigator.mozGetUserMedia ||
                       navigator.msGetUserMedia;
@@ -160,7 +188,6 @@ APP.Camera = function(opt){
   }else{
     this.initHTML5();
   }
-
 };
 
 APP.Camera.prototype.initHTML5 = function(){
@@ -171,10 +198,12 @@ APP.Camera.prototype.initHTML5 = function(){
     }else{
       that.video.src = stream; // Opera
     }
+    that.ready = true;
   }, this.noCamera);
 };
 
 APP.Camera.prototype.initFlash = function(){
+  window.alert('Lets play with Chrome Canary!');
   throw Error('Flash Fallback Missing and no getUserMedia!');
 };
 
