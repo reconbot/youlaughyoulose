@@ -7,11 +7,35 @@ var express = require('express')
   , path = require('path')
   , SmileDetector = require('./smile_detector/build/Release/face.node')
 
+//
+// Setup ------------------------------------------------------------------------
+//
+
 var port = (process.argv[2] || 3000)
   , viewPath = process.cwd() + '/views'
-  , tmpImagesPath = './tmp'
-  , ramdiskPath = '/Volumes/ramdisk' // see readme for ramdisk info under OS X
   , staticPath = process.cwd() + '/public';
+
+var tmpImagesPath = './tmp'
+  , ramdiskPath = '/Volumes/ramdisk' // see readme for ramdisk info under OS X
+  , picsDirPath = '/img/funny_pics';
+
+
+//
+// If a ramdisk (under OS X) is mounted, attempt to use it
+// otherwise create a tmp dir in the project directory
+//
+if (path.existsSync(ramdiskPath)) {
+  console.log("Ramdisk path exists, using it as tmp dir.");
+  tmpImagesPath = ramdiskPath;
+} else {
+  if (!path.existsSync(tmpImagesPath)) {
+    fs.mkdirSync(tmpImagesPath);
+    console.log("Created tmp dir: " + tmpImagesPath);
+  }
+}
+console.log("tmp dir: " + tmpImagesPath);
+
+var allPicturePaths = fs.readdirSync(staticPath + picsDirPath);
 
 
 app.configure(function(){
@@ -30,6 +54,10 @@ app.configure(function(){
 });
 
 
+//
+// Routes -----------------------------------------------------------------------
+//
+
 app.get('/', function(req, res){
   res.render('index');
 });
@@ -39,22 +67,11 @@ io.sockets.on('connection', function (socket) {
   socket.send('Hello Program!');
 });
 
+app.get('/randompic', function(req, res){
+  var randomPic = allPicturePaths[ Math.floor(Math.random() * allPicturePaths.length) ];
+  res.send(picsDirPath + '/' + randomPic);
+});
 
-//
-// If a ramdisk (under OS X) is mounted, attempt to use it
-// otherwise create a tmp dir in the project directory
-//
-if (path.existsSync(ramdiskPath)) {
-  console.log("Ramdisk path exists, using it as tmp dir.");
-  tmpImagesPath = ramdiskPath;
-} else {
-  if (!path.existsSync(tmpImagesPath)) {
-    fs.mkdirSync(tmpImagesPath);
-    console.log("Created tmp dir: " + tmpImagesPath);
-  }
-}
-
-console.log("tmp dir: " + tmpImagesPath);
 
 app.listen(port);
 console.log("Listening on port: " + port);
