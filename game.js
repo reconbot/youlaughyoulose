@@ -82,6 +82,7 @@ var detect = function(imageDataURL, cb){
     console.log("got image event with no cb, wtf!");
     return;
   }
+  console.log(socket.id + ' Got Image');
 
   // remove data url header
   var base64PNG = imageDataURL.substring(CONFIG.dataURLHeader.length)
@@ -94,18 +95,17 @@ var detect = function(imageDataURL, cb){
       console.log(err);
 
     SmileDetector.detect(tmpImgFilePath, function(faces) {
-      console.log("Found " + faces.length + " faces");
+      console.log(socket.id + " Found " + faces.length + " faces");
       var lost = false;
 
       for (var i=0 ; i < faces.length ; i++) {
         var face = faces[i];
-        console.log("Face [" + i + "]: smiling? " + face.smile + " / smile intensity: ");
+        console.log(socket.id + " Face [" + i + "]: smiling? " + face.smile + " / smile intensity: ");
         if (face.smile && face.intensity > CONFIG.smileThreshold) {
           face.loser = true;
           lost = true;
         }
       }
-
       if (lost){
         lose(socket, imageDataURL, faces);
         cb(true, faces);

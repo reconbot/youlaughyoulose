@@ -1,12 +1,21 @@
+<div class="container">
+  <div class="row btnrow">
+    <h1 class="title">You Laugh, You Lose</h1>
+  </div>
+</div>
+
 <div id="game" class="container">
   <div class="row viewport">
-    <video class="js-video" autoplay></video>
+    <div class="loading">
+      <h1>Give me your webcam!</h1>
+    </div>
+    <video class="js-video hide" autoplay></video>
     <canvas class="js-countdown countdown hide" width="640" height="480"></canvas>
     <canvas class="js-canvas hide" width="640" height="480"></canvas>
-    <img class="js-funny-image funny-image" />
+    <img class="js-funny-image funny-image hide" />
   </div>
   <div class="row btnrow">
-    <button class="js-ready readybtn btn">READY!</button>
+    <button class="js-ready readybtn btn">Play the Game</button>
   </div>
 </div>
 

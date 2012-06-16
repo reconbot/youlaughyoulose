@@ -15,8 +15,16 @@ APP.Game = Backbone.View.extend({
     this.playing = false;
     this.maxLineWidth = 10;
 
-
     this.render();
+
+    if(this.camera.ready){
+      this.showVideo();
+    }else{
+      this.camera.on('ready', function(){
+        this.showVideo();
+      }, this);
+    }
+
 
     _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win', 'showRandomImage', 'startCountDown');
 
@@ -49,6 +57,7 @@ APP.Game = Backbone.View.extend({
 
   startCountDown: function(countDown){
     this.stopCountDown();
+    this.$('.js-ready').text('Wait for it...').addClass('disabled');
     var seconds = Math.floor(countDown/1000);
     var that = this;
     this.countDown = setInterval(function(){
@@ -67,20 +76,24 @@ APP.Game = Backbone.View.extend({
   },
 
   start: function(){
+    console.log('Starting the game!');
     this.playing = true;
     this.stopCountDown();
     this.showPictures();
     this.startCyclingImages();
     this.snapshot();
+    this.$('.js-ready').text("DON'T LAUGH").addClass('disabled');
   },
 
   stop: function(){
+    console.log('Stopping the game!');
     this.playing = false;
+    this.$('.js-ready').text("Play the Game Again!").removeClass('disabled');
   },
 
   startCyclingImages: function() {
-    this.showRandomImage();
 
+    this.showRandomImage();
     this.pictureIntervalId = setInterval(this.showRandomImage, 5*1000);
   },
 
@@ -89,16 +102,19 @@ APP.Game = Backbone.View.extend({
   },
 
   showRandomImage: function() {
+    console.log('showRandomImage!');
     var randomPic = this.pictureURLs[ Math.floor(Math.random() * this.pictureURLs.length) ];
     $('.js-funny-image').attr('src', randomPic);
   },
 
   snapshot: function(){
+    console.log('snapshot!');
     var data = this.camera.snapshot();
     this.socket.emit('image',data, this.onFaceResult);
   },
 
   onFaceResult: function(isSmiling, faces){
+    console.log('onFaceResult!');
     if(isSmiling){
       return this.lose(faces);
     }
@@ -109,6 +125,7 @@ APP.Game = Backbone.View.extend({
   },
 
   win: function(imageDataURL, faces){
+    console.log('muthaFucka!');
     this.winAudioElement.play();
     this.stopCyclingImages();
     this.stop();
@@ -121,6 +138,7 @@ APP.Game = Backbone.View.extend({
   },
 
   lose: function(faces){
+    console.log('I\'m sorry for your loss.');
     this.loseAudioElement.play();
     this.stopCyclingImages();
     this.stop();
@@ -235,6 +253,8 @@ APP.Camera = function(opt){
   }
 };
 
+_.extend(APP.Camera.prototype, Backbone.Events);
+
 APP.Camera.prototype.initHTML5 = function(){
   var that = this;
   navigator.getUserMedia({video: true}, function(stream) {
@@ -243,6 +263,7 @@ APP.Camera.prototype.initHTML5 = function(){
     }else{
       that.video.src = stream; // Opera
     }
+    that.trigger('ready');
     that.ready = true;
   }, this.noCamera);
 };
