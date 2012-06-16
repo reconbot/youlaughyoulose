@@ -10,9 +10,13 @@ APP.Game = Backbone.View.extend({
 
     this.maxLineWidth = 10;
 
-    this.buzzerAudioElement = document.createElement('audio');
-    this.buzzerAudioElement.setAttribute('src', '/sounds/buzzer.mp3');
-    this.buzzerAudioElement.load();
+    this.loseAudioElement = document.createElement('audio');
+    this.loseAudioElement.setAttribute('src', '/sounds/buzzer.mp3');
+    this.loseAudioElement.load();
+
+    this.winAudioElement = document.createElement('audio');
+    this.winAudioElement.setAttribute('src', '/sounds/bell.mp3');
+    this.winAudioElement.load();
 
     _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win');
 
@@ -53,12 +57,12 @@ APP.Game = Backbone.View.extend({
   },
 
   win: function(){
-    window.alert('youwin!');
     console.log('you won!');
+    this.winAudioElement.play();
   },
 
   lose: function(face){
-    this.buzzerAudioElement.play();
+    this.loseAudioElement.play();
     this.drawBoxes(face);
     window.alert('haha you lose');
     console.log('you lost');
