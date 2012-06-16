@@ -8,6 +8,7 @@ var SmileDetector = require('./smile_detector/smile_detector')
 var players = {};
 
 var timeout;
+var countDown = 10*1000;
 
 //hook up the functions we want on the socket
 var gameOn = function(socket){
@@ -18,14 +19,25 @@ var gameOn = function(socket){
   socket.on('ready', setReady);
 };
 
-var setReady = function(){
+var setReady = function(data, fn){
   if(this.ready){ return; }
   if(timeout){
     clearTimeout(timeout);
   }
-  timeout = setTimeout(startGame, 10000);
+  timeout = setTimeout(startGame, countDown);
   console.log(this.id + ' is ready');
   this.ready = true;
+  
+  // Let everyone know that someone is ready
+  var that = this;
+  _.forEach(players, function(player){
+    if(player !== that){
+      player.emit('ready', countDown);
+    }
+  });
+  //send the confirm ready event back
+  if(typeof fn === 'function'){fn(countDown);}
+
   checkReady();
 };
 

@@ -18,11 +18,12 @@ APP.Game = Backbone.View.extend({
 
     this.render();
 
-    _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win', 'showRandomImage');
+    _.bindAll(this, 'onFaceResult', 'start', 'stop', 'snapshot', 'win', 'showRandomImage', 'startCountDown');
 
     this.socket.on('start', this.start);
     this.socket.on('stop', this.stop);
     this.socket.on('win', this.win);
+    this.socket.on('ready', this.startCountDown);
   },
 
   render: function(){
@@ -43,7 +44,24 @@ APP.Game = Backbone.View.extend({
 
   ready: function(){
     this.showVideo();
-    this.socket.emit('ready', 'you know it!');
+    this.socket.emit('ready', 'you know it!', this.startCountDown);
+  },
+
+  startCountDown: function(countDown){
+    if(this.countdown){
+      clearInterval(this.countdown);
+    }
+    var seconds = Math.floor(countDown/1000);
+    var that = this;
+    this.countDown = setInterval(function(){
+      that.showCountDown(seconds);
+      seconds -= 1;
+      if(!seconds){
+        clearInterval(that.countDown);
+      }
+    }, 1000);
+    //start and reset countdown
+    console.log(countDown);
   },
 
   start: function(){
@@ -69,7 +87,7 @@ APP.Game = Backbone.View.extend({
 
   showRandomImage: function() {
     var randomPic = this.pictureURLs[ Math.floor(Math.random() * this.pictureURLs.length) ];
-    $('.js-funnyImage').attr('src', randomPic);
+    $('.js-funny-image').attr('src', randomPic);
   },
 
   snapshot: function(){
@@ -112,21 +130,26 @@ APP.Game = Backbone.View.extend({
   },
 
   showVideo: function(){
-    this.$('.js-canvas').addClass('hide');
-    this.$('.js-funnyImage').addClass('hide');
+    this.$('.viewport').children().addClass('hide');
     this.$('.js-video').removeClass('hide');
   },
 
   showCanvas: function(){
-    this.$('.js-video').addClass('hide');
-    this.$('.js-funnyImage').addClass('hide');
+    this.$('.viewport').children().addClass('hide');
     this.$('.js-canvas').removeClass('hide');
   },
 
   showPictures: function(){
-    this.$('.js-video').addClass('hide');
-    this.$('.js-canvas').addClass('hide');
-    this.$('.js-funnyImage').removeClass('hide');
+    this.$('.viewport').children().addClass('hide');
+    this.$('.js-funny-image').removeClass('hide');
+  },
+
+  showCountDown: function(text){
+    //don't hide shit
+    console.log(text);
+    var el = this.$('.js-countdown').removeClass('hide').get(0);
+    var ctx = el.getContext('2d');
+    ctx.fillText(text, 100, 100);
   },
 
   loadImageIntoCanvas: function(imageDataURL, callback) {

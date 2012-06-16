@@ -3,11 +3,24 @@ body {
   background-color: #FFFFEE;
 }
 
-.viewport{
+.viewport, .btnrow{
   text-align: center;
+  position: relative;
+  width: 640px;
+  margin: 0 auto 0 auto;
 }
 
 .readybtn{
   background: #EA8;
   color: maroon;
+}
+
+.countdown{
+  position: absolute;
+  z-index: 10;
+  top:0;
+  left:0;
+}
+
+.funny-image{
 }
