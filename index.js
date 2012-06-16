@@ -20,6 +20,11 @@ var tmpImagesPath = './tmp'
   , picsDirPath = '/img/funny_pics';
 
 
+CONFIG = {
+  dataURLHeader: 'data:image/png;base64,'
+}
+
+
 //
 // If a ramdisk (under OS X) is mounted, attempt to use it
 // otherwise create a tmp dir in the project directory
@@ -33,6 +38,7 @@ if (path.existsSync(ramdiskPath)) {
     console.log("Created tmp dir: " + tmpImagesPath);
   }
 }
+CONFIG.tmpImagesPath = tmpImagesPath;
 console.log("tmp dir: " + tmpImagesPath);
 
 var allPicturePaths = fs.readdirSync(staticPath + picsDirPath);
