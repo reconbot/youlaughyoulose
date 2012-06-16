@@ -58,9 +58,9 @@ APP.Game = Backbone.View.extend({
     this.winAudioElement.load();
 
     // preload funny images
-    for (var i=0 ; i < this.pictureURLs.length ; i++){
-      $('<img src ="' + this.pictureURLs[i] + '"/>');
-    }
+    //for (var i=0 ; i < this.pictureURLs.length ; i++){
+    //  $('<img src ="' + this.pictureURLs[i] + '"/>');
+    //}
 
   },
 
@@ -272,8 +272,8 @@ APP.Game = Backbone.View.extend({
 APP.Camera = function(opt){
   opt = opt || {};
 
-  var x = opt.x || 640;
-  var y = opt.y || 480;
+  var x = opt.x || 480;
+  var y = opt.y || 360;
 
   //use a real thing or make a document fragment
   this.canvas = opt.canvas || $('<canvas width="' + x +'" height="'+y+'"></canvas>').get(0);
