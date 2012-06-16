@@ -18,6 +18,8 @@ var tmpImagesPath = './tmp'
   , ramdiskPath = '/Volumes/ramdisk' // see readme for ramdisk info under OS X
   , picsDirPath = '/img/funny_pics';
 
+io.set('log level', 1); //0 - error, 1 - warn, 2 - info, 3 - debug
+
 
 CONFIG = {
   dataURLHeader: 'data:image/png;base64,',
@@ -84,3 +86,4 @@ app.get('/randompic', function(req, res){
 
 app.listen(port);
 console.log("Listening on port: " + port);
+console.log("http://localhost:" + port);
