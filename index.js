@@ -18,8 +18,11 @@ var tmpImagesPath = './tmp'
   , ramdiskPath = '/Volumes/ramdisk' // see readme for ramdisk info under OS X
   , picsDirPath = '/img/funny_pics';
 
+// IO setup https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
 io.set('log level', 1); //0 - error, 1 - warn, 2 - info, 3 - debug
-
+//io.set('heartbeat timeout', 15); //default 60
+//io.set('heartbeat interval', 10);
+//io.set('close timeout', 10);
 
 CONFIG = {
   dataURLHeader: 'data:image/png;base64,',
@@ -48,7 +51,7 @@ var allPicturePaths = fs.readdirSync(staticPath + picsDirPath);
 
 app.configure(function(){
   app.use(express.bodyParser());
-  app.use(express.logger());
+  //app.use(express.logger());
   app.use(express.responseTime());
   app.use(express.static(staticPath));
   app.register('.mustache', mustache);
