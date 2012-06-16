@@ -7,18 +7,24 @@ var SmileDetector = require('./smile_detector/smile_detector')
 
 var players = {};
 
+var timeout;
+
 //hook up the functions we want on the socket
 var gameOn = function(socket){
   console.log(socket.id + ' joined the game');
   players[socket.id] = socket;
   socket.ready = false;
   socket.on('image', detect);
-  socket.on('ready', function(){setReady(socket);});
+  socket.on('ready', setReady);
 };
 
-var setReady = function(socket){
-  console.log(socket.id + ' is ready');
-  socket.ready = true;
+var setReady = function(){
+  if(timeout){
+    clearTimeout(timeout);
+  }
+  timeout = setTimeout(startGame, 10000);
+  console.log(this.id + ' is ready');
+  this.ready = true;
   checkReady();
 };
 
@@ -27,19 +33,25 @@ var checkReady = function(){
     return playa.ready;
   });
   if(weReady){
-    _.forEach(players, function(playa){
-      playa.emit('start', '!');
-      playa.ready = false;
-    });
+    startGame();
   }
 };
 
-var lose = function(socket){
-  console.log(socket.id + ' lost');
-  var loser = this;
-  this.emit('lose');
+var startGame = function(){
+    var gameId = new Date().getTime();
+    _.forEach(players, function(playa){
+      if(!playa.ready){return;}
+      playa.gameId = gameId;
+      playa.ready = false;
+      playa.emit('start', '!');
+    });
+};
+
+var lose = function(loser){
+  console.log(loser.id + ' lost');
+  loser.emit('lose');
   _.forEach(players, function(player){
-    if(player !== loser){
+    if(player !== loser && player.gameId === loser.gameId){
       player.emit('win', '!');
     }
   });
@@ -52,6 +64,7 @@ var gameOff = function(socket){
 };
 
 var detect = function(data, cb){
+  var socket = this;
   if (!cb) {
     console.log("got image event with no cb, wtf!");
     return;
@@ -81,10 +94,12 @@ var detect = function(data, cb){
         }
       }
 
-      if (lost)
+      if (lost){
+        lose(socket);
         cb(true, faces);
-      else
+      }else{
         cb(false, null);
+      }
 
       fs.unlink(tmpImgFilePath);
     });
