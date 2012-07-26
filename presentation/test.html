@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+</head>
+<body>
+<video width="600" height="600"></video>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script src="http://underscorejs.org/underscore-min.js"></script>
+
+
+<script>
+
+  Camera = function(opt){
+    opt = opt || {};
+
+    this.x = opt.x || 640;
+    this.y = opt.y || 480;
+
+    //use a real thing or make a document fragment
+    this.canvas = opt.canvas || $('<canvas width="' + this.x +'" height="'+this.y+'"></canvas>').get(0);
+    this.video = opt.video || $('<video autoplay></video>').get(0);
+    this.ctx = this.canvas.getContext('2d');
+    this.ready = false;
+    // stupid w3c vendor prefix garbage
+    navigator.getUserMedia = navigator.getUserMedia ||
+                        navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia ||
+                        navigator.msGetUserMedia;
+
+    if(!navigator.getUserMedia){
+      this.initFlash();
+    }else{
+      this.initHTML5();
+    }
+  };
+
+  _.extend(Camera.prototype, Backbone.Events);
+
+  Camera.prototype.initHTML5 = function(){
+    var that = this;
+    navigator.getUserMedia({video: true}, function(stream) {
+      if (navigator.webkitGetUserMedia){
+        that.video.src = window.webkitURL.createObjectURL(stream);
+      }else{
+        that.video.src = stream; // Opera
+      }
+      that.trigger('ready');
+      that.ready = true;
+    }, this.noCamera);
+  };
+
+  Camera.prototype.initFlash = function(){
+    window.alert('Lets play with Chrome Canary!');
+    throw Error('Flash Fallback Missing and no getUserMedia!');
+  };
+
+  Camera.prototype.noCamera = function(e) {
+    console.log('Failed to acquire camera!', e);
+    window.alert('no camera!');
+  };
+
+  Camera.prototype.snapshot = function() {
+    this.ctx.drawImage(this.video, 0, 0, this.x, this.y);
+    return this.canvas.toDataURL('image/jpeg');
+  };
+
+cam = new Camera({
+  'video':$('video')
+});
+
+​</script>
+</body>
+</html>

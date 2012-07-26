@@ -1,0 +1,26 @@
+{
+  "author": "Francis Gulotta & Michael Shapiro",
+  "name": "youlaughyoulose",
+  "description": "Oy boy",
+  "version": "0.0.1-13",
+  "dependencies": {
+    "express": "~2.5.10",
+    "socket.io": "0.9.6",
+    "underscore": "~1.3.3",
+    "smile_detector": "0.2.0",
+    "async": "~0.1.22",
+    "canvas": "~0.12.1"
+  },
+  "bundleDependencies": [
+    "smile_detector"
+  ],
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "0.6.x"
+  },
+  "subdomain": "youlaughyoulose",
+  "scripts": {
+    "start": "index.js"
+  }
+}

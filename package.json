@@ -2,7 +2,7 @@
   "author": "Francis Gulotta & Michael Shapiro",
   "name": "youlaughyoulose",
   "description": "Oy boy",
-  "version": "0.0.1-2",
+  "version": "0.0.1-13",
   "dependencies": {
     "express": "~2.5.10",
     "socket.io": "0.9.6",

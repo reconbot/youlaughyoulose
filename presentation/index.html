@@ -1,0 +1,248 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<title>Shower Presentation Template</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=1274, user-scalable=no">
+	<link rel="stylesheet" href="themes/ribbon/styles/style.css">
+	<!--
+		To apply styles to the certain slides
+		use slide ID to get needed elements
+		-->
+	<style>
+		#beards h2 {
+			color:#FFF;
+			text-align:center;
+			font-size:70px;
+			}
+		#aboutme img{
+			max-width: 25%;
+			float: left;
+			margin-right: 2em;
+		}
+		#FitToWidth h2,
+		#FitToHeight h2 {
+			color:#FFF;
+			text-align:center;
+		}
+		.white h2{
+			color: white;
+		}
+	</style>
+</head>
+<body class="list">
+	<header class="caption">
+		<h1>You Laugh You Lose</h1>
+		<p>How to win a trip to nodeconf.</p>
+	</header>
+	<div class="slide cover" id="Cover">
+		<div>
+			<section>
+				<header>
+					<h1>You Laugh You Lose</h1>
+					<p>How to win a trip to nodeconf.</p>
+				</header>
+				<img src="pictures/485.JPG" alt="">
+			</section>
+		</div>
+	</div>
+
+	<div class="slide shout" id="canary"><div>
+		<section>
+			<header>
+				<h2>Please Download Google Chrome Canary Now</h2>
+			</header>
+		</section>
+	</div></div>
+
+
+	<div class="slide" id="aboutme"><div>
+		<section>
+			<header>
+				<h2>About me</h2>
+			</header>
+			<img src="pictures/wizard-2010.jpg" alt="me">
+
+			<p>
+				I'm Francis Gulotta <code>@reconbot</code>.<br>
+				<a href="https://github.com/reconbot/" target="_blank">github.com/reconbot</a> <br>
+				Photos are all taken by <code>@opeliasdaisies</code> can be found on her flickr <a href="http://www.flickr.com/photos/opheliasdaisies/" target="_blank">flickr.com/photos/opheliasdaisies/</a>.
+			</p>
+		</section>
+	</div></div>
+
+	<div class="slide shout" id="jitsu"><div>
+		<section>
+			<header>
+				<h2>Thank You NodeJitsu</h2>
+				<h3>Hackathons are fun</h3>
+			</header>
+		</section>
+	</div></div>
+
+	<div class="slide shout" id="jifasnif"><div>
+		<section>
+			<header>
+				<h2>jifasnif</h2>
+			</header>
+		</section>
+	</div></div>
+
+	<div class="slide" id="webrtc"><div>
+		<section>
+			<header>
+				<h2>What is webrtc</h2>
+			</header>
+			<ul>
+				<li><a href="http://www.webrtc.org/" target="_blank">I had no idea</a></li>
+				<li>A set of javascript apis for Real Time Communication (RTC!)</li>
+				<li>Webcam, audio and peer to peer communication.</li>
+				<li>Very few docs, very little support
+					<ol>
+						<li>Opera pretends they have it in production</li>
+						<li>May or may not crash your browser</li>
+						<li>Really really slow</li>
+					</ol>
+				</li>
+			</ul>
+		</section>
+	</div></div>
+
+	<div class="slide" id="how"><div>
+		<section>
+			<header>
+				<h2>how we did it</h2>
+			</header>
+			<ul>
+				<li>Socket.io</li>
+				<li>Express (not really)</li>
+				<li>Camera.js <a href="https://gist.github.com/3037462" target="_blank">(gist)</a> </li>
+				<li>magic face detection</li>
+				<li>lots of events</li>
+				<li>very lose and very forgiving logic</li>
+			</ul>
+		</section>
+	</div></div>
+
+	<div class="slide" id="how2"><div>
+		<section>
+			<header>
+				<h2>Show them code</h2>
+			</header>
+			<p>Also check out max ogdon's domnode.</p>
+		</section>
+	</div></div>
+
+	<div class="slide" id="how3"><div>
+		<section>
+			<header>
+				<h2>dev work</h2>
+			</header>
+			<img src="pictures/development_smile.png" alt="">
+		</section>
+	</div></div>
+
+	<div class="slide cover white" id="exampleface1"><div>
+		<section>
+			<header>
+				<h2>Face Detection</h2>
+			</header>
+			<img src="pictures/083.JPG" alt="">
+		</section>
+	</div></div>
+
+	<div class="slide cover white" id="exampleface2"><div>
+		<section>
+			<header>
+				<h2 style="text-align:center;">How many faces?</h2>
+			</header>
+			<img src="pictures/093.JPG" alt="">
+		</section>
+	</div></div>
+
+	<div class="slide cover white" id="exampleface3"><div>
+		<section>
+			<header>
+				<h2>Computers happen to be dumb</h2>
+				<h2>2/6 faces are real</h2>
+			</header>
+			<img src="pictures/267.JPG" alt="">
+		</section>
+	</div></div>
+
+	<div class="slide cover white" id="exampleface4"><div>
+		<section>
+			<header>
+				<h2>Sometimes <br>it works</h2>
+			</header>
+			<p style="color: white;">3 faces detected</p>
+
+			<img src="pictures/101.JPG" alt="">
+		</section>
+	</div></div>
+	<div class="slide cover w white" id="exampleface5"><div>
+		<section>
+			<header>
+				<h2>You can lose to objects</h2>
+			</header>
+			<p style="color: white;"></p>
+			<img src="pictures/132.JPG" alt="">
+		</section>
+	</div></div>
+
+
+	<div class="slide cover w white" id="exampleface6"><div>
+		<section>
+			<header>
+				<h2>Sorta</h2>
+			</header>
+			<p style="color: white;"></p>
+			<img src="pictures/133.JPG" alt="">
+		</section>
+	</div></div>
+
+	
+
+	<div class="slide cover" id="beards">
+		<div>
+			<section>
+				<header>
+					<h2>Beards Are Confusing</h2>
+				</header>
+				<img src="pictures/beards_are_confusing.png" alt="">
+			</section>
+		</div>
+	</div>
+
+	<div class="slide shout" id="Demo"><div>
+		<section>
+			<header>
+				<h2><a href="http://ylyl.jit.su/" target="_blank">Try me out</a></h2>
+			</header>
+		</section>
+	</div></div>
+
+	<div class="slide" id="ThankYou"><div>
+		<section>
+			<header>
+				<h2>Thanks!</h2>
+			</header>
+			<p>Francis Gulotta</p>
+			<ul>
+				<li><a href="http://rbrtr.com">rbrtr.com</a></li>
+				<li><a href="http://twitter.com/reconbot">twitter.com/reconbot</a></li>
+				<li><a href="mailto:wizard@roborooter.com">wizard@roborooter.com</a></li>
+			</ul>
+			<p>Shower: <a href="http://github.com/pepelsbey/shower">github.com/pepelsbey/shower</a></p>
+		</section>
+	</div></div>
+	<!--
+		To hide progress bar from entire presentation
+		just remove “progress” element.
+		-->
+	<div class="progress"><div></div></div>
+	<script src="scripts/script.js"></script>
+	<!-- Copyright © 2010–2012 Vadim Makeev — pepelsbey.net -->
+	<!-- Photos by John Carey — fiftyfootshadows.net -->
+</body>
+</html>
