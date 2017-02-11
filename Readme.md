@@ -1,6 +1,8 @@
 You Laugh, You Lose
 ====================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/reconbot/youlaughyoulose.svg)](https://greenkeeper.io/)
+
 Requirements:
   + OpenCV 2.3.1a (for Haar feature detection)
   + *Dev Channel* release of Chrome (or recent Opera). 
